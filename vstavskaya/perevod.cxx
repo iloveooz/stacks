@@ -80,45 +80,35 @@
 				return;
 			do {
 				i--;
-				std::cout << elem[i] << ' ';
+				std::cout << elem[i] << '\n';
 			}
 			while (i > 0);
-			
-			std::cout << '\n';
 		}
 	};
 	
-	int main() {		
-		int i = 0;
+	int main() {
 		int n = 0;
-		
-		double elem = 0.0;
-		
-		std::cout << "Введите количество элементов в стеке: ";
-		std::cin >> n;
-
+		int value = 0;
 		Stack *stk = new Stack(NMAX);
-		
-		for(i = 0; i < n; i++) {
-			std::cout << "Введите " << i << "-й элемент: ";
-			std::cin >> elem;
-			
-			stk->push(elem);
-		}
-		
-		std::cout << "В стеке " << stk->gettop() << " элементов." << '\n';
 				
-		stk->stkPrint();
+		std::cout << "Введите число: ";
+		std::cin >> value;
 		
-		std::cout << "Верхний элемент " << stk->stkTop() << '\n';
+		std::cout << "Введите основание: ";
+		std::cin >> n;
+		
 		do {
-			std::cout << "Извлекаем элемент " << stk->pop();
-			std::cout << ". В стеке осталось " << stk->gettop() << " элементов." << '\n';
+			stk->push(value % n);
+			value = value / n;
 		} 
-		while (stk->isempty() == 0);
+		while(value > 0);
 		
-		delete stk;
+		do {
+			std::cout << stk->pop();
+		} 
+		while(stk->isempty() == 0);
 		
 		std::cout << '\n';
 		return 0;
 	}
+	
