@@ -1,106 +1,119 @@
 
 	#include <iostream>
-	#define NMAX 100
+	#define NMAX 10
 	
 	// Стек можно реализовать в виде следующей структуры:
 	struct Stack {
-		float elem[NMAX];
 		int top;
+		double *elem;
+		
+		// конструктор
+		Stack(int N) {
+			top = 0;		
+			elem = new double[N];
+			std::cout << "Стэк создан." << '\n';
+		}
+		
+		~Stack() {
+			// delete [] elem;
+			delete elem;
+			std::cout << "Стэк уничтожен." << '\n';
+		}
+
+		// Индекс элемента, находящегося в вершине стека, равен 0.
+		void init() {
+			top = 0;
+		}
+				
+		// Помещение элемента в стек
+		void push(double f) {
+			if (top < NMAX) {
+				elem[top] = f;
+				top++;
+			} 
+			else
+			std::cout << "Стек полон, количество элементов: " << top << '\n';
+		}
+				
+		// Удаление элемента из стека
+		double pop() {
+			double element;
+			if (top > 0) {
+				top--;
+				element = elem[top];
+				return element;
+			} 
+			else {
+				std::cout << "Стек пуст!" << '\n';
+				return 0;
+			}
+		}	
+
+		// Извлечение вершины стека
+		double stkTop() {
+			if(top > 0) {
+				return elem[top - 1];
+			} 
+			else {
+				std::cout << "Стек пуст!" << '\n';
+				return 0;
+			}
+		}
+		
+		// Получение верхнего элемента стека без его удаления
+		int gettop() {
+			return top;
+		}
+		
+		// Определение пустоты стека
+		int isempty() {
+			if (top == 0)
+				return 1;
+			else 
+				return 0;
+		}
+		
+		// Вывод элементов стека
+		void stkPrint() {
+			int i = top;
+			if (isempty() == 1) 
+				return;
+			do {
+				i--;
+				std::cout << elem[i] << '\n';
+			}
+			while (i > 0);
+		}
 	};
 	
-	// Индекс элемента, находящегося в вершине стека, равен 0.
-	void init(Stack *stk) {
-		stk->top = 0;
-	}
-	
-	// Помещение элемента в стек
-	void push(Stack *stk, float f) {
-		if (stk->top < NMAX) {
-			stk->elem[stk->top] = f;
-			stk->top++;
-		} 
-		else
-		std::cout << "Стек полон, количество элементов:" << stk->top << '\n';
-	}
-	
-	// Удаление элемента из стека
-	float pop(Stack *stk) {
-		float elem;
-		if (stk->top > 0) {
-			stk->top--;
-			elem = stk->elem[stk->top];
-			return elem;
-		} 
-		else {
-			std::cout << "Стек пуст!" << '\n';
-			return 0;
-		}
-	}	
-
-	// Извлечение вершины стека
-	float stkTop(Stack *stk) {
-		if(stk->top > 0) {
-			return stk->elem[stk->top - 1];
-		} 
-		else {
-			std::cout << "Стек пуст!" << '\n';
-			return 0;
-		}
-	}
-	
-	// Получение верхнего элемента стека без его удаления
-	int gettop(Stack *stk) {
-		return stk->top;
-	}
-	
-	// Определение пустоты стека
-	int isempty(Stack *stk) {
-		if (stk->top == 0)
-			return 1;
-		else 
-			return 0;
-	}
-	
-	// Вывод элементов стека
-	void stkPrint(Stack *stk) {
-		int i = stk->top;
-		if (isempty(stk) == 1) 
-			return;
-		do {
-			i--;
-			std::cout << stk->elem[i] << '\n';
-		}
-		while (i > 0);
-	}
-	
-	int main() {
-		Stack *stk;
-		int i, n;
-		float elem;
+	int main() {		
+		int i = 0;
+		int n = 0;
 		
-		stk = new Stack;
-		init(stk);
+		double elem = 0.0;
 		
 		std::cout << "Введите количество элементов в стеке: ";
 		std::cin >> n;
+
+		Stack *stk = new Stack(NMAX);
 		
 		for(i = 0; i < n; i++) {
 			std::cout << "Введите " << i << "-й элемент: ";
 			std::cin >> elem;
 			
-			push(stk, elem);
+			stk->push(elem);
 		}
 		
-		std::cout << "В стеке " << gettop(stk) << " элементов." << '\n';
+		std::cout << "В стеке " << stk->gettop() << " элементов." << '\n';
 				
-		stkPrint(stk);
+		stk->stkPrint();
 		
-		std::cout << "Верхний элемент " << stkTop(stk) << '\n';
+		std::cout << "Верхний элемент " << stk->stkTop() << '\n';
 		do {
-			std::cout << "Извлекаем элемент " << pop(stk);
-			std::cout << ". В стеке осталось " << gettop(stk) << " элементов." << '\n';
+			std::cout << "Извлекаем элемент " << stk->pop();
+			std::cout << ". В стеке осталось " << stk->gettop() << " элементов." << '\n';
 		} 
-		while (isempty(stk) == 0);
+		while (stk->isempty() == 0);
 		
 		std::cout << '\n';
 		return 0;
